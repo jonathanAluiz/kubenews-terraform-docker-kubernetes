@@ -23,17 +23,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
     
-      - name: Docker Login
-        # You may pin to the exact commit or the version.
-       # uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b
+      - name: Autenticando o usuario DockerHub
         uses: docker/login-action@v2.0.0
         with:
           username: ${{secrets.DOCKERHUB_USER}}
           password: ${{secrets.DOCKERHUB_PWD}}
       
-      - name: Build and push Docker images
-        # You may pin to the exact commit or the version.
-        # uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8
+      - name: Construindo e enviando para o DockerHub
         uses: docker/build-push-action@v3.0.0
         with:
           file: ./src/Dockerfile
@@ -48,13 +44,13 @@ jobs:
     needs: [CI]
     steps:
       - uses: actions/checkout@v3
-      - name: Kubernetes Set Context
+      - name: Definindo Kuberconfig
         uses: Azure/k8s-set-context@v2
         with:
           method: kubeconfig
           kubeconfig: ${{secrets.K8S_CONFIG}}
           
-      - name: Deploy to Kubernetes cluster
+      - name: Deploy Kubernetes na Digital Ocean
         uses: Azure/k8s-deploy@v3.1
         with:
           images: jhonthan/kube-news:${{github.run_number}}
