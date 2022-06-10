@@ -52,4 +52,4 @@ app.get('/', async (req, res) => {
 models.initDatabase();
 app.listen(8080);
 
-console.log('Aplicação rodando na porta 8080');
+console.log('Aplication running in the port 8080');
