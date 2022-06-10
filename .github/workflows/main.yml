@@ -23,13 +23,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
     
-      - name: Autenticando o usuario DockerHub
+      - name: Authentication in the DockerHub
         uses: docker/login-action@v2.0.0
         with:
           username: ${{secrets.DOCKERHUB_USER}}
           password: ${{secrets.DOCKERHUB_PWD}}
       
-      - name: Construindo e enviando para o DockerHub
+      - name: Build and sending for the DockerHub
         uses: docker/build-push-action@v3.0.0
         with:
           file: ./src/Dockerfile
@@ -44,13 +44,13 @@ jobs:
     needs: [CI]
     steps:
       - uses: actions/checkout@v3
-      - name: Definindo Kuberconfig
+      - name: Defining Kuberconfig
         uses: Azure/k8s-set-context@v2
         with:
           method: kubeconfig
           kubeconfig: ${{secrets.K8S_CONFIG}}
           
-      - name: Deploy Kubernetes na Digital Ocean
+      - name: Deploy Kubernetes on Digital Ocean
         uses: Azure/k8s-deploy@v3.1
         with:
           images: jhonthan/kube-news:${{github.run_number}}
